@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Abaco.github.io/static/css/main.e90ae0f2.css",
+    "main.js": "/Abaco.github.io/static/js/main.59e37447.js",
+    "static/js/787.0121db19.chunk.js": "/Abaco.github.io/static/js/787.0121db19.chunk.js",
+    "index.html": "/Abaco.github.io/index.html",
+    "main.e90ae0f2.css.map": "/Abaco.github.io/static/css/main.e90ae0f2.css.map",
+    "main.59e37447.js.map": "/Abaco.github.io/static/js/main.59e37447.js.map",
+    "787.0121db19.chunk.js.map": "/Abaco.github.io/static/js/787.0121db19.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e90ae0f2.css",
+    "static/js/main.59e37447.js"
+  ]
+}
