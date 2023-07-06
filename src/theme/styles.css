@@ -1,0 +1,22 @@
+@font-face {
+    font-family: "VAG Rounded Std";
+    font-weight: 400;
+    src: url("//db.onlinewebfonts.com/t/d4280feab480528a5c1b9c7b210e97bd.eot"); 
+    src: url("//db.onlinewebfonts.com/t/d4280feab480528a5c1b9c7b210e97bd.eot?#iefix") format("embedded-opentype"), 
+    url("//db.onlinewebfonts.com/t/d4280feab480528a5c1b9c7b210e97bd.woff2") format("woff2"), 
+    url("//db.onlinewebfonts.com/t/d4280feab480528a5c1b9c7b210e97bd.woff") format("woff"), 
+    url("//db.onlinewebfonts.com/t/d4280feab480528a5c1b9c7b210e97bd.ttf") format("truetype"), 
+    url("//db.onlinewebfonts.com/t/d4280feab480528a5c1b9c7b210e97bd.svg#VAG Rounded") format("svg"); 
+}
+
+@font-face {font-family: "VAG Rounded Std"; 
+    font-weight: 800;
+    src: url("//db.onlinewebfonts.com/t/50caebd3d1f303be2ec212f78f8c084e.eot"); 
+    src: url("//db.onlinewebfonts.com/t/50caebd3d1f303be2ec212f78f8c084e.eot?#iefix") format("embedded-opentype"), 
+    url("//db.onlinewebfonts.com/t/50caebd3d1f303be2ec212f78f8c084e.woff2") format("woff2"), 
+    url("//db.onlinewebfonts.com/t/50caebd3d1f303be2ec212f78f8c084e.woff") format("woff"), 
+    url("//db.onlinewebfonts.com/t/50caebd3d1f303be2ec212f78f8c084e.ttf") format("truetype"), 
+    url("//db.onlinewebfonts.com/t/50caebd3d1f303be2ec212f78f8c084e.svg#VAG Rounded Std") format("svg"); 
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;800&display=swap');
