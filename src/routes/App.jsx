@@ -18,24 +18,12 @@ function App() {
         {/* <Context> */}
         <BrowserRouter>
           <Routes>
-            {/* <redirect exact from="/" to="/signin" /> */}
-            {/* <Route path="/" element={<Home></Home>}></Route> */}
             <Route path="/" element={<Navigate replace to="/signin" />} />
             <Route path="/signin" element={<SignIn></SignIn>}></Route>
             <Route path="/signup" element={<SignUp></SignUp>}></Route>
-            {/* <Route
-              path="/producto/:id"
-              element={<DetailsProduct></DetailsProduct>}
-            ></Route>
-            <Route
-              exact
-              path="/agregarProducto"
-              element={<PrivateRoute component={AddProduct} />}
-            />
-            <Route path="/login" element={<Login></Login>}></Route> */}
+            <Route path="/home" element={<Home></Home>}></Route>
           </Routes>
         </BrowserRouter>
-        {/* </Context> */}
       </ThemeProvider>
     </div>
   );

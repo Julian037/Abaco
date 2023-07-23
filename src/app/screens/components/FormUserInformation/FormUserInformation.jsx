@@ -40,7 +40,6 @@ const FormUserInformation = ({
     const obj = JSON.parse(users);
     array.push(formState.values);
     const newArray = array.concat(obj);
-    console.log("newArray", newArray);
     const convertedArray = JSON.stringify(newArray);
     localStorage.setItem("users", convertedArray);
     handleMessage("Usuario creado correctamente.", "success", enqueueSnackbar);

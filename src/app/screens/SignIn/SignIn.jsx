@@ -45,7 +45,6 @@ const SignIn = () => {
     errors: {},
   });
 
-  console.log("formState", formState);
   let [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => {
