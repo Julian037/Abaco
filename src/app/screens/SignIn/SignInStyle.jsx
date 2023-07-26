@@ -27,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundPosition: "100% 0%",
   },
   quoteInner: {
-    backgroundColor: "#125285",
-    padding: "30px 60px 30px 36px",
+    // backgroundColor: "#125285",
+    padding: "30px 60px 150px 96px",
     borderRadius: "0px 70px 70px 0px",
     flexBasis: "500px",
     marginBottom: "70px",

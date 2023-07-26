@@ -4,8 +4,9 @@ import { Link as RouterLink } from "react-router-dom";
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
 import Schema from "validate";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-
+import { useNavigate } from "react-router-dom";
 import handleMessage from "../../../helpers/handleMessage";
+import miImagen from "../../../assets/images/Abaco - copia-fotor-bg-remover-2023072611547.png";
 
 import {
   Button,
@@ -36,6 +37,7 @@ const user = new Schema({
 
 const SignIn = () => {
   const classes = useStyles();
+  const navigate = useNavigate();
 
   const [formState, setFormState] = useState({
     isValid: false,
@@ -99,6 +101,8 @@ const SignIn = () => {
         "success",
         enqueueSnackbar
       );
+
+      navigate("/home");
     } else {
       handleMessage(
         "Algo salió mal. Parece que el usuario o la contraseña que ingresaste no son correctos.",
@@ -117,6 +121,20 @@ const SignIn = () => {
         <Grid className={classes.quoteContainer} item lg={6}>
           <div className={classes.quote}>
             <div className={classes.quoteInner}>
+              <div
+              // style={{ width: "100px", height: "100px", backgroundColor: "blue" }}
+              >
+                <img
+                  style={{
+                    width: "250px",
+                    height: "250px",
+                    // maxWidth: "50%",
+                    // maxHeight: "50%",
+                  }}
+                  src={miImagen}
+                  alt="hola"
+                />
+              </div>
               <Typography
                 align="left"
                 className={classes.quoteText}
