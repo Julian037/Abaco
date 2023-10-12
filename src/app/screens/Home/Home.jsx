@@ -1,17 +1,14 @@
 import * as React from "react";
 import { styled, useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
+import { Collapse , Box , List} from '@mui/material';
+// import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
 import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -21,15 +18,30 @@ import Purchases from "../components/Purchases/Purchases";
 import Supplies from "../components/Supplies/Supplies";
 import Inventory from "../components/Inventory/Inventory";
 import Order from "../components/Order/Order";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import InventoryIcon from "@mui/icons-material/Inventory";
-import ReorderIcon from "@mui/icons-material/Reorder";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import PersonIcon from "@mui/icons-material/Person";
-import SettingsIcon from "@mui/icons-material/Settings";
-import LogoutIcon from "@mui/icons-material/Logout";
 
-// import Orders from "../components/Orders/Orders";
+import {
+  ManageAccounts,
+  ShoppingBasket,
+  Search,
+  ShoppingCart,
+  Add,
+  ListAlt,
+  LocalShipping,
+  Inventory as InventoryBox,
+  Group,
+  AddBusiness,
+  Help,
+  SupportAgent,
+  HourglassEmpty,
+  Logout,
+  Settings,
+  ExpandMore,
+  ExpandLess,
+  ChevronRight,
+  ChevronLeft,
+  Menu,
+} from '@mui/icons-material';
+import PurchaseHistory from "../components/PurchaseHistory/PurchaseHistory";
 
 const drawerWidth = 240;
 
@@ -98,6 +110,42 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 const Home = () => {
+
+  const iconAssigner = (text) => {
+    switch (text) {
+      case "Admin de usuarios":
+        return <ManageAccounts />
+      case "Compras":
+        return <ShoppingBasket />;
+      case "Historial de compras":
+        return <Search />;
+      case "Realizar compra":
+        return <ShoppingCart />;
+      case "Registro de producto":
+        return <Add />;
+      case "Solicitud de insumos":
+        return <ListAlt />;
+      case "Pedidos":
+        return <LocalShipping />;
+      case "Inventarios":
+        return <InventoryBox />;
+      case "Usuarios":
+        return <Group />;
+      case "Proveedores":
+        return <AddBusiness />;
+      case "Configuración":
+        return <Settings />;  
+      case "Ayuda":
+        return <Help />;
+      case "Contactenos":
+        return <SupportAgent />;
+      case "Cerrar sesión":
+        return <Logout />;
+      default:
+        return <HourglassEmpty />;
+    }
+  };
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -114,7 +162,7 @@ const Home = () => {
 
   let componenteMostrado;
 
-  if (componenteSeleccionado === "Compras") {
+  if (componenteSeleccionado === "Realizar compra") {
     componenteMostrado = <Purchases />;
   } else if (componenteSeleccionado === "Solicitud de insumos") {
     componenteMostrado = <Supplies />;
@@ -122,35 +170,52 @@ const Home = () => {
     componenteMostrado = <Order />;
   } else if (componenteSeleccionado === "inventarios") {
     componenteMostrado = <Inventory />;
+  } else if (componenteSeleccionado === "Historial de compras") {
+    componenteMostrado = <PurchaseHistory />;
   }
 
-  const test = (text) => {
-    switch (text) {
-      case "Compras":
-        return <ShoppingCartIcon />;
 
-      case "Solicitud de insumos":
-        return <ListAltIcon />;
 
-      case "Pedidos":
-        return <ReorderIcon />;
+  const navBarItems = [
+    {sectionName: 'Admin de usuarios', enable: false, sectionItems : []},
+    { sectionName: 'Compras',
+      enable: true,
+      sectionItems : ["Historial de compras" , "Realizar compra" , "Registro de producto"] 
+    },
+    {sectionName: 'Solicitud de insumos', enable: false, sectionItems : [] },
+    {sectionName: 'Pedidos', enable: false, sectionItems : [] },
+    {sectionName: 'Inventarios', enable: false, sectionItems : [] },
+    {sectionName: 'Usuarios', enable: false, sectionItems : [] },
+    {sectionName: 'Proveedores', enable: false, sectionItems : [] },
+  ]
 
-      case "inventarios":
-        return <InventoryIcon />;
+  const navBarComplements = ["Configuración", "Ayuda", "Contactenos", "Cerrar sesión"]
 
-      case "Perfil":
-        return <PersonIcon />;
+  const [open2, setOpen2] = useState(false);
+  const [position, setPosition] = useState();
 
-      case "Configuración":
-        return <SettingsIcon />;
+  console.log('hola position' , position)
 
-      case "Cerrar sesión":
-        return <LogoutIcon />;
-
-      default:
-        return null;
+  const handleClick = (nombre) => {
+    if ( nombre !== position){
+      setOpen2(true)
+    } else {
+      setOpen2(!open2);
     }
+   
   };
+
+  const probando = (visible) => {
+    if (visible){
+      if (open2) {
+        return <ExpandLess />
+      } else {
+        return  <ExpandMore /> 
+      }
+      // return <ExpandMore />
+      // // {  open2  ? <ExpandLess /> : <ExpandMore /> }
+    } else <></>
+  }
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -167,7 +232,7 @@ const Home = () => {
               ...(open && { display: "none" }),
             }}
           >
-            <MenuIcon />
+            <Menu />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
             Abaco
@@ -178,21 +243,21 @@ const Home = () => {
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
+              <ChevronRight />
             ) : (
-              <ChevronLeftIcon />
+              <ChevronLeft />
             )}
           </IconButton>
         </DrawerHeader>
         <Divider />
         <List>
-          {["Compras", "Solicitud de insumos", "Pedidos", "inventarios"].map(
-            (text, index) => (
+          {navBarItems.map(
+            (item, index) => (
               <ListItem
-                key={text}
+                key={index}
                 disablePadding
                 sx={{ display: "block" }}
-                onClick={() => setComponenteSeleccionado(text)}
+                onClick={ !item.enable ? () => setComponenteSeleccionado(item.sectionName) : null}
               >
                 <ListItemButton
                   sx={{
@@ -200,6 +265,7 @@ const Home = () => {
                     justifyContent: open ? "initial" : "center",
                     px: 2.5,
                   }}
+                  onClick={() => {handleClick(item.sectionName); setPosition(item.sectionName)}}
                 >
                   <ListItemIcon
                     sx={{
@@ -208,17 +274,39 @@ const Home = () => {
                       justifyContent: "center",
                     }}
                   >
-                    {test(text)}
+                    {iconAssigner(item.sectionName)}
                   </ListItemIcon>
-                  <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                  <ListItemText primary={item.sectionName} sx={{ opacity: open ? 1 : 0 }} />
+                  {/* { ( open2 && item?.enable) ? <ExpandLess /> : <ExpandMore /> } */}
+                  {probando(item.enable)}
                 </ListItemButton>
+
+
+  <Collapse in={item.sectionName === position && open2} timeout="auto" unmountOnExit>
+  <List component="div" disablePadding>
+    {item.sectionItems?.map((item) => 
+            <ListItemButton sx={{ pl: 4 }} onClick={ () => setComponenteSeleccionado(item) }>
+            <ListItemIcon>
+              {iconAssigner(item)}
+              {/* <StarBorder /> */}
+            </ListItemIcon>
+          <ListItemText primary={item} />
+          </ListItemButton>
+    )}
+
+  </List>
+</Collapse>
+
+
+
+
               </ListItem>
             )
           )}
         </List>
         <Divider />
         <List>
-          {["Perfil", "Configuración", "Cerrar sesión"].map((text, index) => (
+          {navBarComplements.map((text, index) => (
             <ListItem key={text} disablePadding sx={{ display: "block" }}>
               <ListItemButton
                 sx={{
@@ -234,7 +322,7 @@ const Home = () => {
                     justifyContent: "center",
                   }}
                 >
-                  {test(text)}
+                  {iconAssigner(text)}
                 </ListItemIcon>
                 <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
