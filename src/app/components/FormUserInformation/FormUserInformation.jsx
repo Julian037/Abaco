@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
 import { Button, TextField, Typography, Link } from "@mui/material";
-import handleMessage from "../../../../helpers/handleMessage";
+import handleMessage from "../../../helpers/handleMessage";
 
 const FormUserInformation = ({
   classes,

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import {Button} from "@mui/material";
 import Table from '@mui/material/Table';
@@ -19,8 +19,9 @@ import {rows} from './DataPurchaseHistory'
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import * as locales from '@mui/material/locale';
-import { useState } from 'react';
 import useStyles from "./PurchaseHistoryStyle";
+
+import AddProductModal from '../AddProductModal/AddProductModal';
 
 const PurchaseHistory = () => {
 
@@ -107,8 +108,17 @@ const PurchaseHistory = () => {
     );
   }
 
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+
   return (
     <>
+      <AddProductModal 
+       open={open}
+       setOpen={setOpen}
+      
+      />      
+
       <Button
         variant="outlined"
         startIcon={<AddCircleOutlineIcon />}
@@ -120,6 +130,7 @@ const PurchaseHistory = () => {
         variant="outlined"
         startIcon={<AddCircleOutlineIcon />}
         className={classes.button}
+        onClick={handleOpen}
       >
         Registrar producto
       </Button>

@@ -99,4 +99,4 @@ export const rows = [
   { id: '000098', status: 'Recibido', createdDate: '10/01/2025 - 13:40', updateDate: '12/01/2025 - 14:35', supplier: 'Súper desechables', processOrder: '...' },
   { id: '000099', status: 'Devuelto', createdDate: '15/01/2025 - 15:50', updateDate: '17/01/2025 - 16:45', supplier: 'DistriCarnicos', processOrder: '...' },
   { id: '000100', status: 'Procesado', createdDate: '20/01/2025 - 17:55', updateDate: '22/01/2025 - 18:50', supplier: 'Distribuidora surtir', processOrder: '...' },
-];
+].sort((a, b) => (Math.floor(a.id) > Math.floor(b.id) ? -1 : 1));

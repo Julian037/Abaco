@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState } from 'react';
 import { styled, useTheme } from "@mui/material/styles";
 import { Collapse , Box , List} from '@mui/material';
 // import Box from "@mui/material/Box";
@@ -13,11 +13,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { useState } from "react";
-import Purchases from "../components/Purchases/Purchases";
-import Supplies from "../components/Supplies/Supplies";
-import Inventory from "../components/Inventory/Inventory";
-import Order from "../components/Order/Order";
+
+import Purchases from "../../components/Purchases/Purchases";
+import Supplies from "../../components/Supplies/Supplies";
+import Inventory from "../../components/Inventory/Inventory";
+import Order from "../../components/Order/Order";
+import PurchaseHistory from "../../components/PurchaseHistory/PurchaseHistory";
 
 import {
   ManageAccounts,
@@ -41,7 +42,7 @@ import {
   ChevronLeft,
   Menu,
 } from '@mui/icons-material';
-import PurchaseHistory from "../components/PurchaseHistory/PurchaseHistory";
+
 
 const drawerWidth = 240;
 

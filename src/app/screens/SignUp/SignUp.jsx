@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useStyles from "./SignUpStyle";
 import { Grid, Typography } from "@mui/material";
-import FormUserInformation from "../components/FormUserInformation/FormUserInformation";
+import FormUserInformation from "../../components/FormUserInformation/FormUserInformation";
 
 const SignUp = () => {
   const classes = useStyles();
