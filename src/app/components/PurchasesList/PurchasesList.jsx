@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -9,9 +9,43 @@ import { TextField } from "@mui/material";
 import { useState } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
+import { arrayDeProductos } from "../../../helpers/dataProducts";
 
 const PurchasesList = () => {
   const [cantidad, setCantidad] = useState(0);
+
+  const listProduct = arrayDeProductos
+
+
+  const initialProductValue = {
+    id: null,
+  };
+
+  const initialValue = [{
+      id: null,
+      brand: null,
+      size: null,
+      price: null,
+      description: null,
+  }]
+
+  const [selectedID, setSelectedID] = useState(initialProductValue);
+
+  const [searchedProduct, setSearchedProduct] = useState(initialValue);
+
+  
+  const handleChange = (event) => {
+    setSelectedID({
+      ...selectedID,
+      [event.target.name]: event.target.value,
+    });
+  };
+  
+  useEffect(() => {
+    const filteredItem = listProduct.filter((item) => item.id === parseInt(selectedID.id))
+    setSearchedProduct(filteredItem)
+  },[selectedID])
+
 
   return (
     <Card
@@ -23,6 +57,9 @@ const PurchasesList = () => {
           id="standard-basic"
           label="Código del producto"
           variant="standard"
+          onChange={handleChange}
+          name="id"
+          value={selectedID?.id}
         />
 
         <Typography
@@ -35,8 +72,7 @@ const PurchasesList = () => {
         </Typography>
 
         <Typography variant="body2">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore
+          {searchedProduct[0]?.description}
         </Typography>
       </CardContent>
 

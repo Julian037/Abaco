@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme) => ({
     margin: "0px 16px 16px 0px",
   },
 
-  test : {
+  cardContainer : {
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -18,8 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   btnHeadSol: {
-
-    width: '170px',
+    width: '180px',
     height: '35px',
     backgroundColor: '#125285',
     '&:hover': {
@@ -35,8 +34,6 @@ const useStyles = makeStyles((theme) => ({
       marginRight: '16px',
     },
   },
-
-
 
   textBtnHead2: {
     color: '#FFFFFF',

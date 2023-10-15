@@ -1,51 +1,50 @@
 import React, { useState } from 'react'
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import { TextField } from "@mui/material";
-import {Button} from "@mui/material";
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
+import {
+  TextField,
+  Typography,
+  Button,
+  CardContent,
+  CardActions,
+  Card,
+  Modal 
+} from "@mui/material";
+import {Check, Close} from '@mui/icons-material';
+import { SnackbarProvider, enqueueSnackbar } from "notistack";
 
 import useStyles from "./AddProductModalStyle";
+import handleMessage from '../../../helpers/handleMessage';
 
 const AddProductModal = ({open, setOpen}) => {
 
   const classes = useStyles();
 
+  const initialProductValue = {
+    id: null,
+    brand: null,
+    size: null,
+    price: null,
+    description: null,
+  };
 
-
-  const handleClose = () => setOpen(false);
-
-  const [newProduct, setNewProduct] = useState({
-    id: 1,
-    brand: 'Colanda',
-    size: '10kg',
-    price: 30000,
-    description: 'asdfasdf asdf asdf asd',
-  });
+  const [newProduct, setNewProduct] = useState(initialProductValue);
   
   const handleChange = (event) => {
     setNewProduct({
       ...newProduct,
       [event.target.name]: event.target.value,
     });
-    // setFormState({
-    //   ...formState,
-    //   touched: {
-    //     ...formState.touched,
-    //     [event.target.name]: true,
-    //   },
-    // });
   };
 
-  console.log({newProduct})
+  const handleClose = () => setOpen(false);
+
+  const addNewProduct = () => {
+    handleMessage("Producto creado correctamente.", "success", enqueueSnackbar);
+    setOpen(false)
+  };
 
   return (
-    <Modal
+    <>
+      <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -54,7 +53,7 @@ const AddProductModal = ({open, setOpen}) => {
         <Card
           style={{ maxWidth: "90%", justifyContent: "center", margin: "16px" }}
           sx={{ minWidth: 275 }}
-          className={classes.test}
+          className={classes.cardContainer}
         >
           <CardContent>
             <Typography variant='h1'>
@@ -72,6 +71,7 @@ const AddProductModal = ({open, setOpen}) => {
                 label="Marca del producto"
                 style={{  margin: '10px'}} 
                 onChange={handleChange}
+                name="brand"
                 value={newProduct.brand}
               />
             </div>
@@ -80,12 +80,14 @@ const AddProductModal = ({open, setOpen}) => {
                 label="Tamaño del producto"
                 style={{  margin: '10px'}} 
                 onChange={handleChange}
+                name="size"
                 value={newProduct.size}
               />
               <TextField 
                 label="Precio del producto"
                 style={{  margin: '10px'}} 
                 onChange={handleChange}
+                name="price"
                 value={newProduct.price}
               />
             </div>
@@ -94,6 +96,7 @@ const AddProductModal = ({open, setOpen}) => {
                 label="Descripción del producto"
                 style={{  margin: '10px'}} 
                 onChange={handleChange}
+                name="description"
                 value={newProduct.description}
               />
             </div>
@@ -104,9 +107,12 @@ const AddProductModal = ({open, setOpen}) => {
                 variant="outlined"
                 color="secondary"
               >
-                <CheckIcon className={classes.textBtnHead2}/>
-                <Typography className={classes.textBtnHead2}>
-                  Solicitar servicio
+                <Check className={classes.textBtnHead2}/>
+                <Typography
+                  className={classes.textBtnHead2}
+                  onClick={addNewProduct}
+                >
+                  Registrar producto
                 </Typography>
               </Button>
               <Button
@@ -114,14 +120,21 @@ const AddProductModal = ({open, setOpen}) => {
                 variant="outlined"
                 color="secondary"
               >
-                <CloseIcon className={classes.textBtnHead2}/>
-                <Typography className={classes.textBtnHead2}>
+                <Close className={classes.textBtnHead2}/>
+                <Typography 
+                  className={classes.textBtnHead2}
+                  onClick = {() => {handleClose(); setNewProduct(initialProductValue)}}
+                >
                   Cancelar registro
                 </Typography>
               </Button>
           </CardActions>
         </Card>
       </Modal>
+      <div>
+        <SnackbarProvider />
+      </div>
+    </>
   )
 }
 
