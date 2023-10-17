@@ -42,6 +42,7 @@ import {
   ChevronLeft,
   Menu,
 } from '@mui/icons-material';
+import SuppliersHistory from '../../components/SuppliersHistory/SuppliersHistory';
 
 
 const drawerWidth = 240;
@@ -172,7 +173,9 @@ const Home = () => {
   } else if (componenteSeleccionado === "inventarios") {
     componenteMostrado = <Inventory />;
   } else if (componenteSeleccionado === "Historial de compras") {
-    componenteMostrado = <PurchaseHistory />;
+    componenteMostrado = <PurchaseHistory setComponenteSeleccionado={setComponenteSeleccionado}/>;
+  } else if (componenteSeleccionado === "Proveedores") {
+    componenteMostrado = <SuppliersHistory />;
   }
 
 

@@ -15,15 +15,16 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import TableHead from '@mui/material/TableHead';
-import {rows} from './DataPurchaseHistory'
+import {rows} from './DataSuppliersHistory'
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
 import * as locales from '@mui/material/locale';
-import useStyles from "./PurchaseHistoryStyle";
+import useStyles from "./SuppliersHistoryStyle";
 
 import AddProductModal from '../AddProductModal/AddProductModal';
+import AddSupplierModal from '../AddSupplierModal/AddSupplierModal';
 
-const PurchaseHistory = ({setComponenteSeleccionado}) => {
+const SuppliersHistory = () => {
 
   const classes = useStyles();
   const theme = useTheme();
@@ -44,14 +45,14 @@ const PurchaseHistory = ({setComponenteSeleccionado}) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
+  
   const columns = [
-    { id: 'id', label: 'ID', minWidth: 100 },
-    { id: 'status', label: 'Estado del pedido', minWidth: 100 },
-    { id: 'createdDate', label: 'Fecha de creación', minWidth: 100 },
-    { id: 'updateDate', label: 'Última actualización', minWidth: 100 },
-    { id: 'supplier', label: 'Proveedor', minWidth: 100 },
-    { id: 'processOrder', label: 'Procesar pedido', minWidth: 100 },
+    { id: 'id', label: 'NIT', minWidth: 100 },
+    { id: 'name', label: 'Nombre', minWidth: 100 },
+    { id: 'email', label: 'Email', minWidth: 100 },
+    { id: 'address', label: 'Dirección', minWidth: 100 },
+    { id: 'phone', label: 'Teléfono', minWidth: 100 },
+    { id: 'edit', label: 'Editar', minWidth: 100 },
   ];
 
   function TablePaginationActions(props) {
@@ -113,7 +114,7 @@ const PurchaseHistory = ({setComponenteSeleccionado}) => {
 
   return (
     <>
-      <AddProductModal 
+      <AddSupplierModal 
        open={open}
        setOpen={setOpen}
       
@@ -123,17 +124,9 @@ const PurchaseHistory = ({setComponenteSeleccionado}) => {
         variant="outlined"
         startIcon={<AddCircleOutlineIcon />}
         className={classes.button}
-        onClick={()=> setComponenteSeleccionado('Realizar compra')}
-      >
-        Realizar compra
-      </Button>
-      <Button
-        variant="outlined"
-        startIcon={<AddCircleOutlineIcon />}
-        className={classes.button}
         onClick={handleOpen}
       >
-        Registrar producto
+        Registrar proveedor
       </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
@@ -160,19 +153,19 @@ const PurchaseHistory = ({setComponenteSeleccionado}) => {
                   {row.id}
                 </TableCell>
                 <TableCell  align="left">
-                  {row.status}
+                  {row.name}
                 </TableCell>
                 <TableCell >
-                  {row.createdDate}
+                  {row.email}
                 </TableCell>
                 <TableCell >
-                  {row.updateDate}
+                  {row.address}
                 </TableCell>
                 <TableCell >
-                  {row.supplier}
+                  {row.phone}
                 </TableCell>
                 <TableCell  align="right">
-                  {row.processOrder}
+                  {row.edit}
                 </TableCell>
               </TableRow>
             ))}
@@ -210,4 +203,4 @@ const PurchaseHistory = ({setComponenteSeleccionado}) => {
   );
 };
 
-export default PurchaseHistory;
+export default SuppliersHistory;
