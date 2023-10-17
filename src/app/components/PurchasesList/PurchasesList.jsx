@@ -10,12 +10,12 @@ import { useState } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { arrayDeProductos } from "../../../helpers/dataProducts";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const PurchasesList = () => {
   const [cantidad, setCantidad] = useState(0);
 
   const listProduct = arrayDeProductos
-
 
   const initialProductValue = {
     id: null,
@@ -32,7 +32,6 @@ const PurchasesList = () => {
   const [selectedID, setSelectedID] = useState(initialProductValue);
 
   const [searchedProduct, setSearchedProduct] = useState(initialValue);
-
   
   const handleChange = (event) => {
     setSelectedID({
@@ -53,6 +52,8 @@ const PurchasesList = () => {
       sx={{ minWidth: 275 }}
     >
       <CardContent>
+
+        <div style={{display: 'flex', justifyContent:'space-between'}}>
         <TextField
           id="standard-basic"
           label="Código del producto"
@@ -60,20 +61,72 @@ const PurchasesList = () => {
           onChange={handleChange}
           name="id"
           value={selectedID?.id}
+          style={{marginBottom: '26px'}}
         />
 
-        <Typography
-          style={{ margin: "10px" }}
-          variant="h5"
-          component="div"
-          align="center"
+        <Button
         >
-          Descripción del producto
-        </Typography>
+          <DeleteIcon />
+        </Button>
+        </div>
 
-        <Typography variant="body2">
-          {searchedProduct[0]?.description}
-        </Typography>
+
+        <div style={{display: 'flex'}}>
+          <Typography
+            variant="h5"
+            component="div"
+          >
+            Descripción del producto:
+          </Typography>
+          <Typography 
+            variant="body2"
+            style={{marginLeft: '10px'}}
+          >
+            {searchedProduct[0]?.description}
+          </Typography>
+        </div>
+        <div style={{display: 'flex'}}>
+          <Typography
+            variant="h5"
+            component="div"
+          >
+            Marca:
+          </Typography>
+          <Typography 
+            variant="body2"
+            style={{marginLeft: '10px'}}
+          >
+            {searchedProduct[0]?.brand}
+          </Typography>
+        </div>
+        <div style={{display: 'flex'}}>
+          <Typography
+            variant="h5"
+            component="div"
+          >
+            Unidad de medida:
+          </Typography>
+          <Typography 
+            variant="body2"
+            style={{marginLeft: '10px'}}
+          >
+            {searchedProduct[0]?.size}
+          </Typography>
+        </div>
+        <div style={{display: 'flex'}}>
+          <Typography
+            variant="h5"
+            component="div"
+          >
+            Precio por unidad:
+          </Typography>
+          <Typography 
+            variant="body2"
+            style={{marginLeft: '10px'}}
+          >
+            {searchedProduct[0]?.price}
+          </Typography>
+        </div>
       </CardContent>
 
       <CardActions>
