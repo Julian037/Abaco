@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled, useTheme } from "@mui/material/styles";
 import { Collapse , Box , List} from '@mui/material';
 // import Box from "@mui/material/Box";
@@ -43,6 +43,7 @@ import {
   Menu,
 } from '@mui/icons-material';
 import SuppliersHistory from '../../components/SuppliersHistory/SuppliersHistory';
+import axios from 'axios';
 
 
 const drawerWidth = 240;
@@ -113,6 +114,23 @@ const Drawer = styled(MuiDrawer, {
 
 const Home = () => {
 
+  const [empleados, setEmpleados] = useState([]);
+
+  useEffect(() => {
+    obtenerEmpleados();
+  }, []);
+
+  const obtenerEmpleados = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/empleados');
+      setEmpleados(response.data);
+    } catch (error) {
+      console.error('Error al obtener los empleados:', error);
+    }
+  };
+
+  console.log('julian' , empleados)
+
   const iconAssigner = (text) => {
     switch (text) {
       case "Admin de usuarios":
@@ -142,7 +160,7 @@ const Home = () => {
       case "Contactenos":
         return <SupportAgent />;
       case "Cerrar sesión":
-        return <Logout />;
+        return <Logout  onClick={ ()=> console}/>;
       default:
         return <HourglassEmpty />;
     }
@@ -198,8 +216,6 @@ const Home = () => {
   const [open2, setOpen2] = useState(false);
   const [position, setPosition] = useState();
 
-  console.log('hola position' , position)
-
   const handleClick = (nombre) => {
     if ( nombre !== position){
       setOpen2(true)
@@ -216,8 +232,6 @@ const Home = () => {
       } else {
         return  <ExpandMore /> 
       }
-      // return <ExpandMore />
-      // // {  open2  ? <ExpandLess /> : <ExpandMore /> }
     } else <></>
   }
 

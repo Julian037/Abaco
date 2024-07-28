@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import {Button} from "@mui/material";
 import Table from '@mui/material/Table';
@@ -22,6 +22,7 @@ import * as locales from '@mui/material/locale';
 import useStyles from "./PurchaseHistoryStyle";
 
 import AddProductModal from '../AddProductModal/AddProductModal';
+import axios from 'axios';
 
 const PurchaseHistory = ({setComponenteSeleccionado}) => {
 

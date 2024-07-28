@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   TextField,
   Typography,
@@ -11,7 +11,7 @@ import {
 import {Check, Close} from '@mui/icons-material';
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
 
-import useStyles from "./AddSupplierModalStyle";
+import useStyles from "./EditSupplierModalStyle";
 import handleMessage from '../../../helpers/handleMessage';
 import axios from 'axios';
 
@@ -23,12 +23,25 @@ const initialSupplierValue = {
   phone: null,
 };
 
-const AddSupplierModal = ({open, setOpen}) => {
+const EditSupplierModal = ({open, setOpen, selectedID}) => {
 
   const classes = useStyles();
 
   const [newSupplier, setNewSupplier] = useState(initialSupplierValue);
-  
+
+  useEffect(() => {
+    const obtenerEmpleado = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/proveedores/${selectedID}`);
+        setNewSupplier(response.data)
+      } catch (error) {
+        console.error('Error al obtener el empleado:', error);
+      }
+    };
+
+    obtenerEmpleado();
+  }, [selectedID, open]);
+
   const handleChange = (event) => {
     setNewSupplier({
       ...newSupplier,
@@ -38,33 +51,29 @@ const AddSupplierModal = ({open, setOpen}) => {
 
   const handleClose = () => setOpen(false);
 
-  const addNewProduct = async () => {
+  const handleEdit = async () => {
+    const { nit, name, email, address, phone} = newSupplier
 
-  const { nit, name, email, address, phone} = newSupplier
-
-  try {
-    const nuevoProveedor = {
-      nit,
-      name,
-      email,
-      address,
-      phone,
-    };
-
-    await axios.post('http://localhost:5000/api/proveedores', nuevoProveedor);
-    setNewSupplier(initialSupplierValue)
-    handleMessage("Proveedor creado correctamente.", "success", enqueueSnackbar);
-    setOpen(false)
-  } catch (error) {
-    if(error?.request?.status === 400 ){
-      let primeraEntrada = Object.entries(error?.response?.data?.mensaje?.errors)[0];
-      let primerObjeto = primeraEntrada[1];
-      handleMessage(`${primerObjeto.message}`, "error", enqueueSnackbar);
-    } else {
-      handleMessage("Ha ocurrido un error inesperado", "error", enqueueSnackbar);
+    try {
+      const nuevoProveedor = {
+        nit,
+        name,
+        email,
+        address,
+        phone,
+      };
+      await axios.put(`http://localhost:5000/api/proveedores/${selectedID}`, nuevoProveedor);
+      handleMessage("Proveedor actualizado correctamente.", "success", enqueueSnackbar);
+      setOpen(false)
+      handleMessage("Proveedor actualizado correctamente.", "success", enqueueSnackbar);
+    } catch (error) {
+      if(error.request.status === 400 ){
+        const primeraEntrada = Object.entries(error.response.data.mensaje.errors)[0];
+        const primerObjeto = primeraEntrada[1];
+        handleMessage(`${primerObjeto.message}`, "error", enqueueSnackbar);
+      }
+      console.error('Error al actualizar el empleado:', error);
     }
-  }
-  
   };
 
   return (
@@ -90,6 +99,7 @@ const AddSupplierModal = ({open, setOpen}) => {
                 style={{  margin: '10px'}} 
                 onChange={handleChange}
                 name="nit"
+                // value={newSupplier.nit ? newSupplier.nit : '' }
                 value={newSupplier.nit}
               />
               <TextField 
@@ -135,9 +145,9 @@ const AddSupplierModal = ({open, setOpen}) => {
                 <Check className={classes.textBtnHead2}/>
                 <Typography
                   className={classes.textBtnHead2}
-                  onClick={addNewProduct}
+                  onClick={handleEdit}
                 >
-                  Registrar proveedor
+                  Editar proveedor
                 </Typography>
               </Button>
               <Button
@@ -163,4 +173,4 @@ const AddSupplierModal = ({open, setOpen}) => {
   )
 }
 
-export default AddSupplierModal
+export default EditSupplierModal

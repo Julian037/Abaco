@@ -9,9 +9,39 @@ import SendIcon from "@mui/icons-material/Send";
 import PurchasesList from "../PurchasesList/PurchasesList";
 import { useState } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import axios from "axios";
 
 const Purchases = () => {
   const [cantidadCards, setCantidadCards] = useState(1);
+
+  const initialCantidadCards = {
+    brand: null,
+    description: null,
+    id: null,
+    price: null,
+    size: null,
+    __v: 0,
+    _id: null
+  }
+
+  // const [cantidadCards, setCantidadCards] = useState([]);
+
+  const [productos, setProductos] = useState([]);
+
+  console.log('esto ??' , productos)
+
+  React.useEffect(() => {
+    obtenerProductos();
+  }, []);
+
+  const obtenerProductos = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/productos');
+      setProductos(response.data);
+    } catch (error) {
+      console.error('Error al obtener los productos:', error);
+    }
+  };
 
   return (
     <div>
@@ -48,10 +78,18 @@ const Purchases = () => {
             {(() => {
               const components = [];
               for (let i = 0; i < cantidadCards; i++) {
-                components.push(<PurchasesList key={i} numero={i + 1} />);
+                components.push(<PurchasesList key={i} numero={i + 1} productos={productos} />);
               }
               return components;
             })()}
+            {/* {cantidadCards.map( (card) => {
+              console.log(card) 
+
+              return (
+
+                <div><p>{card}</p></div>
+              )
+            } )} */}
           </div>
 
           <Box sx={{ flexGrow: 1 }} style={{ padding: "16px" }}>

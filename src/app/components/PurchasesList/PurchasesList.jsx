@@ -9,13 +9,13 @@ import { TextField } from "@mui/material";
 import { useState } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-import { arrayDeProductos } from "../../../helpers/dataProducts";
+// import { arrayDeProductos } from "../../../helpers/dataProducts";
 import DeleteIcon from '@mui/icons-material/Delete';
 
-const PurchasesList = () => {
+const PurchasesList = ({productos}) => {
   const [cantidad, setCantidad] = useState(0);
 
-  const listProduct = arrayDeProductos
+  const listProduct = productos
 
   const initialProductValue = {
     id: null,
@@ -41,7 +41,7 @@ const PurchasesList = () => {
   };
   
   useEffect(() => {
-    const filteredItem = listProduct.filter((item) => item.id === parseInt(selectedID.id))
+    const filteredItem = listProduct.filter((item) => item.id === selectedID.id)
     setSearchedProduct(filteredItem)
   },[selectedID])
 

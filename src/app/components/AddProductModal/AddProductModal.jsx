@@ -13,6 +13,7 @@ import { SnackbarProvider, enqueueSnackbar } from "notistack";
 
 import useStyles from "./AddProductModalStyle";
 import handleMessage from '../../../helpers/handleMessage';
+import axios from 'axios';
 
 const AddProductModal = ({open, setOpen}) => {
 
@@ -27,6 +28,8 @@ const AddProductModal = ({open, setOpen}) => {
   };
 
   const [newProduct, setNewProduct] = useState(initialProductValue);
+
+  console.log('newProduct' , newProduct)
   
   const handleChange = (event) => {
     setNewProduct({
@@ -37,9 +40,28 @@ const AddProductModal = ({open, setOpen}) => {
 
   const handleClose = () => setOpen(false);
 
-  const addNewProduct = () => {
-    handleMessage("Producto creado correctamente.", "success", enqueueSnackbar);
-    setOpen(false)
+  const addNewProduct = async () => {
+    
+    try {
+      const nuevoProdcuto = {
+        id: newProduct.id,
+        brand: newProduct.brand,
+        size: newProduct.size,
+        price: newProduct.price,
+        description: newProduct.description,
+      };
+  
+      await axios.post('http://localhost:5000/api/productos', nuevoProdcuto);
+
+      handleMessage("Producto creado correctamente.", "success", enqueueSnackbar);
+      setOpen(false)
+      setNewProduct(initialProductValue)
+
+    } catch (error) {
+      console.error('Error al registrar el producto:', error);
+      handleMessage("Por favor complete todos los campos", "error", enqueueSnackbar);
+    }
+
   };
 
   return (

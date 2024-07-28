@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import {Button} from "@mui/material";
 import Table from '@mui/material/Table';
@@ -10,6 +10,8 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
@@ -23,6 +25,10 @@ import useStyles from "./SuppliersHistoryStyle";
 
 import AddProductModal from '../AddProductModal/AddProductModal';
 import AddSupplierModal from '../AddSupplierModal/AddSupplierModal';
+import axios from 'axios';
+import { enqueueSnackbar } from 'notistack';
+import handleMessage from '../../../helpers/handleMessage';
+import EditSupplierModal from '../EditSupplierModal/EditSupplierModal';
 
 const SuppliersHistory = () => {
 
@@ -32,6 +38,9 @@ const SuppliersHistory = () => {
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [open, setOpen] = useState(false);
+  const [openModalEdit, setOpenModalEdit] = useState(false);
+  const [selectedID, setSelectID] = useState(null);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -45,7 +54,23 @@ const SuppliersHistory = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  
+
+  const [proveedores, setProveedores] = useState([]);
+
+  useEffect(() => {
+    obtenerEmpleados();
+  }, []);
+
+  const obtenerEmpleados = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/proveedores');
+      setProveedores(response.data);
+    } catch (error) {
+       handleMessage("Error al obtener información de proveedores desde la base de datos", "error", enqueueSnackbar);
+    }
+  };
+
+
   const columns = [
     { id: 'id', label: 'NIT', minWidth: 100 },
     { id: 'name', label: 'Nombre', minWidth: 100 },
@@ -53,6 +78,7 @@ const SuppliersHistory = () => {
     { id: 'address', label: 'Dirección', minWidth: 100 },
     { id: 'phone', label: 'Teléfono', minWidth: 100 },
     { id: 'edit', label: 'Editar', minWidth: 100 },
+    { id: 'delete', label: 'Eliminar', minWidth: 100 },
   ];
 
   function TablePaginationActions(props) {
@@ -109,8 +135,22 @@ const SuppliersHistory = () => {
     );
   }
 
-  const [open, setOpen] = useState(false);
+
   const handleOpen = () => setOpen(true);
+  const handleOpenModalEdit = (id) => {
+    setSelectID(id)
+    setOpenModalEdit(true)
+
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/proveedores/${id}`)
+      alert('Empleado eliminado exitosamente');
+    } catch (error) {
+      console.error('Ha ocurrido un error inesperado', error);
+    }
+  };
 
   return (
     <>
@@ -118,7 +158,13 @@ const SuppliersHistory = () => {
        open={open}
        setOpen={setOpen}
       
-      />      
+      />
+
+      <EditSupplierModal 
+       open={openModalEdit}
+       setOpen={setOpenModalEdit}
+       selectedID={selectedID}
+      />        
 
       <Button
         variant="outlined"
@@ -144,13 +190,10 @@ const SuppliersHistory = () => {
               </TableRow>
             </TableHead>
           <TableBody>
-            {(rowsPerPage > 0
-              ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : rows
-            ).map((row) => (
+            {(proveedores).map((row) => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
-                  {row.id}
+                  {row.nit}
                 </TableCell>
                 <TableCell  align="left">
                   {row.name}
@@ -164,8 +207,19 @@ const SuppliersHistory = () => {
                 <TableCell >
                   {row.phone}
                 </TableCell>
-                <TableCell  align="right">
-                  {row.edit}
+                <TableCell  align="center">
+                  <IconButton
+                    onClick={() => handleOpenModalEdit(row._id)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                </TableCell>
+                <TableCell  align="center">
+                  <IconButton
+                    onClick={() => handleDelete(row._id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
