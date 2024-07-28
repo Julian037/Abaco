@@ -7,6 +7,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import handleMessage from "../../../helpers/handleMessage";
 import miImagen from "../../../assets/images/Abaco - copia-fotor-bg-remover-2023072611547.png";
+import axios from "axios";
 
 import {
   Button,
@@ -21,13 +22,12 @@ import {
   Link,
 } from "@mui/material";
 
-const user = new Schema({
+const userSchema = new Schema({
   email: {
     required: true,
     length: { min: 3, max: 32 },
     email: { message: "No parece ser un correo válido" },
   },
-
   password: {
     required: true,
     length: { min: 3, max: 32 },
@@ -43,18 +43,17 @@ const SignIn = () => {
     isValid: false,
     values: {},
     touched: {},
-    active: {},
     errors: {},
   });
 
-  let [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => {
-    setShowPassword((showPassword = !showPassword));
+    setShowPassword(!showPassword);
   };
 
   useEffect(() => {
-    const errors = user.validate(formState.values);
+    const errors = userSchema.validate(formState.values);
 
     setFormState((formState) => ({
       ...formState,
@@ -71,9 +70,7 @@ const SignIn = () => {
       values: {
         ...formState.values,
         [event.target.name]:
-          event.target.type === "checkbox"
-            ? event.target.checked
-            : event.target.value,
+          event.target.type === "checkbox" ? event.target.checked : event.target.value,
       },
       touched: {
         ...formState.touched,
@@ -82,28 +79,30 @@ const SignIn = () => {
     }));
   };
 
-  const handleSignIn = (event) => {
-    const users = localStorage.getItem("users");
-    const obj = JSON.parse(users);
+  const handleSignIn = async (event) => {
+    event.preventDefault();
 
-    const emailSearched = formState.values.email;
-    const passwordSearched = formState.values.password;
+    try {
+      const response = await axios.post('http://localhost:5000/api/usuarios/login', {
+        email: formState.values.email,
+        password: formState.values.password,
+      });
 
-    const isUser = obj.some((object) => {
-      return (
-        object?.email === emailSearched && object?.password === passwordSearched
-      );
-    });
+      if (response.status === 200) {
+        const { token } = response.data;
 
-    if (isUser) {
-      handleMessage(
-        "Estableciendo conexión, por favor espere.",
-        "success",
-        enqueueSnackbar
-      );
+        // Almacenar el token en localStorage
+        localStorage.setItem('token', token);
 
-      navigate("/home");
-    } else {
+        handleMessage(
+          "Estableciendo conexión, por favor espere.",
+          "success",
+          enqueueSnackbar
+        );
+        navigate("/home");
+      }
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
       handleMessage(
         "Algo salió mal. Parece que el usuario o la contraseña que ingresaste no son correctos.",
         "error",
@@ -112,8 +111,7 @@ const SignIn = () => {
     }
   };
 
-  const hasError = (field) =>
-    formState.touched[field] && formState.errors[field] ? true : false;
+  const hasError = (field) => formState.touched[field] && formState.errors[field] ? true : false;
 
   return (
     <div className={classes.root}>
@@ -121,16 +119,9 @@ const SignIn = () => {
         <Grid className={classes.quoteContainer} item lg={6}>
           <div className={classes.quote}>
             <div className={classes.quoteInner}>
-              <div
-              // style={{ width: "100px", height: "100px", backgroundColor: "blue" }}
-              >
+              <div>
                 <img
-                  style={{
-                    width: "250px",
-                    height: "250px",
-                    // maxWidth: "50%",
-                    // maxHeight: "50%",
-                  }}
+                  style={{ width: "250px", height: "250px" }}
                   src={miImagen}
                   alt="hola"
                 />
@@ -158,9 +149,7 @@ const SignIn = () => {
                   className={classes.textField}
                   error={hasError("email")}
                   fullWidth
-                  helperText={
-                    hasError("email") ? formState.errors.email[0] : null
-                  }
+                  helperText={hasError("email") ? formState.errors.email[0] : null}
                   label="Correo"
                   name="email"
                   onChange={handleChange}
@@ -169,9 +158,7 @@ const SignIn = () => {
                   variant="standard"
                 />
                 <FormControl style={{ marginTop: "20px" }} fullWidth>
-                  <InputLabel style={{ marginLeft: "-13px" }}>
-                    Contraseña
-                  </InputLabel>
+                  <InputLabel style={{ marginLeft: "-13px" }}>Contraseña</InputLabel>
                   <Input
                     className={showPassword ? null : classes.formInputPassword}
                     inputProps={{ autocomplete: "new-password" }}
@@ -218,7 +205,7 @@ const SignIn = () => {
                   className={classes.buttonSignIn}
                   color="primary"
                   disabled={
-                    !formState.values.email !== 0 && !formState.values.password
+                    !formState.values.email || !formState.values.password
                   }
                   fullWidth
                   size="large"

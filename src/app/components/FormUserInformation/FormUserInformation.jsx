@@ -103,7 +103,7 @@ const FormUserInformation = ({
           </Link>
         </Typography>
       )}
-      <Button
+      {/* <Button
         className={classes.signUpButton}
         color="primary"
         disabled={!formState.values.password?.length > 0}
@@ -113,7 +113,7 @@ const FormUserInformation = ({
         variant="contained"
       >
         Continuar
-      </Button>
+      </Button> */}
       <div>
         <SnackbarProvider />
       </div>

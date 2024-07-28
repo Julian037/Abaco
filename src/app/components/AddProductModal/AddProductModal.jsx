@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import {
   TextField,
   Typography,
@@ -8,29 +8,27 @@ import {
   Card,
   Modal 
 } from "@mui/material";
-import {Check, Close} from '@mui/icons-material';
+import { Check, Close } from '@mui/icons-material';
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
 
 import useStyles from "./AddProductModalStyle";
 import handleMessage from '../../../helpers/handleMessage';
 import axios from 'axios';
 
-const AddProductModal = ({open, setOpen}) => {
-
+const AddProductModal = ({ open, setOpen }) => {
   const classes = useStyles();
 
   const initialProductValue = {
-    id: null,
-    brand: null,
-    size: null,
-    price: null,
-    description: null,
+    codigo: '', // Nuevo campo para el código
+    brand: '',
+    size: '',
+    price: '',
+    description: '',
+    proveedorNIT: '', // Campo para el NIT del proveedor
   };
 
   const [newProduct, setNewProduct] = useState(initialProductValue);
 
-  console.log('newProduct' , newProduct)
-  
   const handleChange = (event) => {
     setNewProduct({
       ...newProduct,
@@ -41,27 +39,25 @@ const AddProductModal = ({open, setOpen}) => {
   const handleClose = () => setOpen(false);
 
   const addNewProduct = async () => {
-    
     try {
-      const nuevoProdcuto = {
-        id: newProduct.id,
+      const nuevoProducto = {
+        codigo: newProduct.codigo, // Incluir el código
         brand: newProduct.brand,
         size: newProduct.size,
         price: newProduct.price,
         description: newProduct.description,
+        proveedorNIT: newProduct.proveedorNIT, // Incluir el NIT del proveedor
       };
-  
-      await axios.post('http://localhost:5000/api/productos', nuevoProdcuto);
+
+      await axios.post('http://localhost:5000/api/productos', nuevoProducto);
 
       handleMessage("Producto creado correctamente.", "success", enqueueSnackbar);
-      setOpen(false)
-      setNewProduct(initialProductValue)
-
+      setOpen(false);
+      setNewProduct(initialProductValue);
     } catch (error) {
       console.error('Error al registrar el producto:', error);
       handleMessage("Por favor complete todos los campos", "error", enqueueSnackbar);
     }
-
   };
 
   return (
@@ -81,59 +77,66 @@ const AddProductModal = ({open, setOpen}) => {
             <Typography variant='h1'>
               Registro de producto
             </Typography>
-            <div style={{display: 'flex' , justifyContent: 'center'}}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
               <TextField 
-                label="ID producto"
-                style={{  margin: '10px'}} 
+                label="Código del producto"
+                style={{ margin: '10px' }} 
                 onChange={handleChange}
-                name="id"
-                value={newProduct.id}
+                name="codigo"
+                value={newProduct.codigo}
               />
               <TextField 
                 label="Marca del producto"
-                style={{  margin: '10px'}} 
+                style={{ margin: '10px' }} 
                 onChange={handleChange}
                 name="brand"
                 value={newProduct.brand}
               />
             </div>
-            <div style={{display: 'flex' , justifyContent: 'center'}}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
               <TextField 
                 label="Tamaño del producto"
-                style={{  margin: '10px'}} 
+                style={{ margin: '10px' }} 
                 onChange={handleChange}
                 name="size"
                 value={newProduct.size}
               />
               <TextField 
                 label="Precio del producto"
-                style={{  margin: '10px'}} 
+                style={{ margin: '10px' }} 
                 onChange={handleChange}
                 name="price"
                 value={newProduct.price}
               />
             </div>
-            <div style={{display: 'flex' , justifyContent: 'center'}}>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
               <TextField 
                 label="Descripción del producto"
-                style={{  margin: '10px'}} 
+                style={{ margin: '10px' }} 
                 onChange={handleChange}
                 name="description"
                 value={newProduct.description}
               />
             </div>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <TextField 
+                label="NIT del proveedor"
+                style={{ margin: '10px' }} 
+                onChange={handleChange}
+                name="proveedorNIT"
+                value={newProduct.proveedorNIT}
+              />
+            </div>
           </CardContent>
-          <CardActions style={{display: 'flex' , justifyContent: 'center'}}>
+          <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
               <Button
                 className={classes.btnHeadSol}
                 variant="outlined"
                 color="secondary"
+                onClick={addNewProduct}
               >
                 <Check className={classes.textBtnHead2}/>
-                <Typography
-                  className={classes.textBtnHead2}
-                  onClick={addNewProduct}
-                >
+                <Typography className={classes.textBtnHead2}>
                   Registrar producto
                 </Typography>
               </Button>
@@ -141,12 +144,10 @@ const AddProductModal = ({open, setOpen}) => {
                 className={classes.btnHeadSol}
                 variant="outlined"
                 color="secondary"
+                onClick={() => { handleClose(); setNewProduct(initialProductValue); }}
               >
                 <Close className={classes.textBtnHead2}/>
-                <Typography 
-                  className={classes.textBtnHead2}
-                  onClick = {() => {handleClose(); setNewProduct(initialProductValue)}}
-                >
+                <Typography className={classes.textBtnHead2}>
                   Cancelar registro
                 </Typography>
               </Button>
@@ -160,4 +161,4 @@ const AddProductModal = ({open, setOpen}) => {
   )
 }
 
-export default AddProductModal
+export default AddProductModal;
